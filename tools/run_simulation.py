@@ -13,7 +13,7 @@ SIM_BUILD_DIR = Path(os.environ["SIM_BUILD_DIR"])
 def execute_command(cmd, **kwargs):
     print(f"\n=> Executing command:")
     print("    " + " ".join(cmd))
-    subprocess.run(cmd, shell=True, **kwargs)
+    subprocess.run(cmd, **kwargs)
 
 def run_simulation(args):
     test_name = args.testname
@@ -36,22 +36,21 @@ def run_simulation(args):
 
     if gui_mode:
         execute_command([
-            "xelab.bat",
+            "xelab",
             *XELAB_OPTS,
             "-debug",
             "typical"
         ], check=True, cwd=SIM_BUILD_DIR)
         execute_command([
-            "xsim.bat",
+            "xsim",
             f"{test_name}_test",
             "-gui",
             "-t",
-            # Zmień tę linię w execute_command dla xsim.bat:
-            str((ROOT_DIR / "sim" / test_name / "commands.tcl").as_posix())
+            str(ROOT_DIR / "sim" / test_name / "commands.tcl")
         ], check=True, cwd=SIM_BUILD_DIR)
     else:
         execute_command([
-            "xelab.bat",
+            "xelab",
             *XELAB_OPTS,
             "-standalone",
             "-runall"
