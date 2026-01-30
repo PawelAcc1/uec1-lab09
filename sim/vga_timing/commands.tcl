@@ -2,10 +2,10 @@
 # Specify waves to be saved during the simulation
 # ============================================================================ #
 # Save top instance signals
-log_wave *
+#log_wave *
 
 # All design signals (avoid using this in large designs - performance penalty!)
-# log_wave -r *
+log_wave -r *
 
 # ============================================================================ #
 # Run the simulation until $finish

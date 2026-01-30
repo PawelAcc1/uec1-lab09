@@ -42,23 +42,23 @@ end
 always_comb begin
     hcount_nxt = hcount;
     vcount_nxt = vcount;
+    vsync_nxt = vsync;
+    vblnk_nxt = vblnk;
 
     if (hcount < HOR_TOTAL_TIME - 1) begin
         hcount_nxt = hcount + 1;
     end else begin
         hcount_nxt = '0;
-        
+        vblnk_nxt = ((vcount >= (VER_BLANK_START - 1)) && (vcount < VER_TOTAL_TIME - 1));
+        vsync_nxt = (vcount >= (VER_SYNC_START && vcount < VER_SYNC_START + VER_SYNC_TIME - 1));
         if (vcount < VER_TOTAL_TIME - 1) begin
             vcount_nxt = vcount + 1;
         end else begin
             vcount_nxt = '0;
         end
     end
+    hblnk_nxt = ((hcount >= HOR_BLANK_START - 1) && (hcount < HOR_TOTAL_TIME -1));
+    hsync_nxt = (hcount >= (HOR_SYNC_START - 1) && (hcount < HOR_SYNC_START + HOR_SYNC_TIME - 1));
+
 end
-
-assign hblnk_nxt = (hcount_nxt >= HOR_BLANK_START);
-assign hsync_nxt = (hcount_nxt >= HOR_SYNC_START && hcount_nxt < HOR_SYNC_START + HOR_SYNC_TIME);
-
-assign vblnk_nxt = (vcount_nxt >= VER_BLANK_START);
-assign vsync_nxt = (vcount_nxt >= VER_SYNC_START && vcount_nxt < VER_SYNC_START + VER_SYNC_TIME);
 endmodule
